@@ -108,7 +108,7 @@ Surface(
 }
 fun CalcularGorjeta(
     valorEntrada:String,
-    percentagemGorjeta:Double
+    percentagemGorjeta:String
 ):Double{
-        return (valorEntrada.toDoubleOrNull()?:0.0)*percentagemGorjeta/100
+        return (valorEntrada.toDoubleOrNull()?:0.0)*(percentagemGorjeta.toDoubleOrNull()?:0.0)/100
 }
