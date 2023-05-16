@@ -103,7 +103,7 @@ Surface(
             )
 
             Text(
-                text ="valor da Gorjeta: ${NumberFormat.getCurrencyInstance().format(gorjeta)}",
+                text ="valor da Gorjeta : ${NumberFormat.getCurrencyInstance().format(gorjeta)}",
                 modifier = Modifier.padding( top =25.dp),
                 fontSize = 25.sp,
                 textAlign = TextAlign.Center,
