@@ -65,9 +65,7 @@ fun Appcalculadora(){
     var  gorjeta by remember { mutableStateOf(0.0) }
     var percentagemGorjeta by remember { mutableStateOf("") }
     var arredondar by remember {
-        mutableStateOf(false)
-
-    }
+        mutableStateOf(false) }
 
     val focusManager= LocalFocusManager.current
 
@@ -126,8 +124,8 @@ Surface(
                     text ="Arredondar",
                     fontSize = 20.sp
                 )
-                Switch(checked =true,
-                    onCheckedChange ={},
+                Switch(checked =arredondar,
+                    onCheckedChange ={arredondar=it},
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.End)
