@@ -5,13 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -23,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.calculador.ui.theme.CalculadorTheme
+import java.nio.file.WatchEvent
 import java.text.NumberFormat
 
 class MainActivity : ComponentActivity() {
@@ -56,9 +64,14 @@ fun Appcalculadora(){
     var valorEntrada by remember { mutableStateOf("") }
     var  gorjeta by remember { mutableStateOf(0.0) }
     var percentagemGorjeta by remember { mutableStateOf("") }
+    var arredondar by remember {
+        mutableStateOf(false)
+
+    }
+
     val focusManager= LocalFocusManager.current
 
-    gorjeta= CalcularGorjeta(valorEntrada,percentagemGorjeta)
+    gorjeta= CalcularGorjeta(valorEntrada,percentagemGorjeta, arredondar)
 
 Surface(
         modifier = Modifier.fillMaxSize(),
@@ -69,9 +82,11 @@ Surface(
 
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(30.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
+
         ){
             Text(
                 text = "Calcular Gorjeta" ,
@@ -101,6 +116,28 @@ Surface(
                     onNext = {focusManager.clearFocus()}
                 )
             )
+            Row(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .size(48.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text ="Arredondar",
+                    fontSize = 20.sp
+                )
+                Switch(checked =true,
+                    onCheckedChange ={},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(Alignment.End)
+                )
+
+
+
+            }
+                
+
 
             Text(
                 text ="valor da Gorjeta : ${NumberFormat.getCurrencyInstance().format(gorjeta)}",
@@ -116,10 +153,18 @@ Surface(
 }
 fun CalcularGorjeta(
     valorEntrada:String,
-    percentagemGorjeta:String
+    percentagemGorjeta:String,
+    arredondar:Boolean
 ):Double{
-        return (valorEntrada.toDoubleOrNull()?:0.0)*(percentagemGorjeta.toDoubleOrNull()?:0.0)/100
+
+    var gorjeta=(valorEntrada.toDoubleOrNull()?:0.0)*(percentagemGorjeta.toDoubleOrNull()?:0.0)/100
+
+    if (arredondar==true)
+    gorjeta= kotlin.math.ceil(gorjeta)
+
+        return gorjeta
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
